@@ -1,0 +1,13 @@
+build/*
+config/*
+docs/*
+node_modules/*
+public/*
+scripts/*
+mock/*
+package.json
+umi
+.umi-production
+platforms/*
+
+src/utils/tools/ramda.js

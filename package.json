@@ -1,0 +1,59 @@
+{
+  "name": "umi-plugin-animation-routes",
+  "version": "0.0.1",
+  "main": "./lib/index.js",
+  "module": "./es/index.js",
+  "files": [
+    "bin/",
+    "lib/",
+    "es/"
+  ],
+  "scripts": {
+    "test-debug": "node --inspect-brk=9228 ./node_modules/jest/bin/jest --runInBand",
+    "test": "jest --runInBand",
+    "build": "npm run clear && tsc -p config/tsconfig.prod.json && tsc -p config/tsconfig.esm.prod.json",
+    "clear": "rimraf lib dist esm",
+    "prepublishOnly": "npm run build",
+    "pub": "npm publish --registry=https://registry.npmjs.org/ && git push"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "dependencies": {
+    "react-transition-group": "^4.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.42",
+    "@types/react-transition-group": "^4.4.0",
+    "@whalecloud/eslint-config": "0.0.22",
+    "jest": "^24.9.0",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.9.5",
+    "umi": "^3.2.3",
+    "yorkie": "^2.0.0"
+  },
+  "peerDependencies": {
+    "umi": ">=3",
+    "react": ">=16.8"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    }
+  },
+  "author": "",
+  "license": "MIT"
+}

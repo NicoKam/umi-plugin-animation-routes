@@ -2,6 +2,7 @@ node_modules
 dist
 lib
 esm
+es
 .vscode
 temp
 .idea

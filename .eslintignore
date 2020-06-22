@@ -6,6 +6,10 @@ public/*
 scripts/*
 mock/*
 package.json
+lib/*
+es/*
+esm/*
+dist/*
 umi
 .umi-production
 platforms/*

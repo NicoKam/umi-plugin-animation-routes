@@ -11,8 +11,8 @@
   "scripts": {
     "test-debug": "node --inspect-brk=9228 ./node_modules/jest/bin/jest --runInBand",
     "test": "jest --runInBand",
-    "build": "npm run clear && tsc -p config/tsconfig.prod.json && tsc -p config/tsconfig.esm.prod.json",
-    "clear": "rimraf lib dist esm",
+    "build": "npm run clear && k-tools compile --no-babel-runtime",
+    "clear": "rimraf lib dist es",
     "prepublishOnly": "npm run build",
     "pub": "npm publish --registry=https://registry.npmjs.org/ && git push",
     "lint-staged": "lint-staged"
@@ -34,6 +34,7 @@
     "@types/react-transition-group": "^4.4.0",
     "@whalecloud/eslint-config": "0.0.22",
     "jest": "^24.9.0",
+    "k-tools": "^0.1.6",
     "lint-staged": "^10.2.11",
     "rimraf": "^2.6.3",
     "ts-jest": "^24.0.2",

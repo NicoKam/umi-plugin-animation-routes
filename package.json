@@ -6,7 +6,8 @@
   "files": [
     "bin/",
     "lib/",
-    "es/"
+    "es/",
+    "assets"
   ],
   "scripts": {
     "test-debug": "node --inspect-brk=9228 ./node_modules/jest/bin/jest --runInBand",

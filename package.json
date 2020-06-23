@@ -4,9 +4,9 @@
   "main": "./lib/index.js",
   "module": "./es/index.js",
   "files": [
-    "bin/",
     "lib/",
     "es/",
+    "styles/",
     "assets"
   ],
   "keywords": [

@@ -5,7 +5,7 @@ import invariant from 'tiny-invariant';
 import { useHistoryStack } from './renderTools';
 import { injectHistory } from './historyInject';
 import PersistContext from './PersistContext';
-import '../assets/StackRouter.less';
+import '../styles/StackRouter.less';
 
 interface StackRouterProps {
   routerContext: any;

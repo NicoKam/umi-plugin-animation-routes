@@ -9,6 +9,9 @@
     "es/",
     "assets"
   ],
+  "repository": {
+    "url": "https://github.com/NicoKam/umi-plugin-animation-routes"
+  },
   "scripts": {
     "test-debug": "node --inspect-brk=9228 ./node_modules/jest/bin/jest --runInBand",
     "test": "jest --runInBand",

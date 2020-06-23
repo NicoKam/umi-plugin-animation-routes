@@ -9,6 +9,17 @@
     "es/",
     "assets"
   ],
+  "keywords": [
+    "umi",
+    "umijs",
+    "antd",
+    "ant-design",
+    "react",
+    "animate",
+    "animation",
+    "routes",
+    "keep-alive"
+  ],
   "repository": {
     "url": "https://github.com/NicoKam/umi-plugin-animation-routes"
   },

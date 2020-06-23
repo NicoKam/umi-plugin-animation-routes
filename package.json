@@ -29,6 +29,7 @@
     "build": "npm run clear && k-tools compile --no-babel-runtime",
     "clear": "rimraf lib dist es",
     "prepublishOnly": "npm run build",
+    "ppub":"npm version patch && npm run pub",
     "pub": "npm publish --registry=https://registry.npmjs.org/ && git push",
     "lint-staged": "lint-staged"
   },

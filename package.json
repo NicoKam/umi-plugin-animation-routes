@@ -6,8 +6,7 @@
   "files": [
     "lib/",
     "es/",
-    "styles/",
-    "assets"
+    "styles/"
   ],
   "keywords": [
     "umi",

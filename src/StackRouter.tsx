@@ -6,6 +6,7 @@ import { useHistoryStack } from './renderTools';
 import { injectHistory } from './historyInject';
 import PersistContext from './PersistContext';
 import '../styles/StackRouter.less';
+import ShouldUpdate from './ShouldUpdate';
 
 interface StackRouterProps {
   routerContext: any;
@@ -57,16 +58,18 @@ const StackRouter: React.FC<StackRouterProps> = (props) => {
             {/* double transition support persist mode */}
             <CSSTransition in={isShow} timeout={200} classNames={classNames}>
               <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: _index }}>
-                <RouterContext.Provider
-                  value={{
-                    history: curHistory,
-                    location: curLocation,
-                    match,
-                    staticContext,
-                  }}
-                >
-                  <PersistContext.Provider value={{ history: h }}>{props.children}</PersistContext.Provider>
-                </RouterContext.Provider>
+                <ShouldUpdate canUpdate={isShow}>
+                  <RouterContext.Provider
+                    value={{
+                      history: curHistory,
+                      location: curLocation,
+                      match,
+                      staticContext,
+                    }}
+                  >
+                    <PersistContext.Provider value={{ history: h }}>{props.children}</PersistContext.Provider>
+                  </RouterContext.Provider>
+                </ShouldUpdate>
               </div>
             </CSSTransition>
           </CSSTransition>

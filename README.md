@@ -1,9 +1,10 @@
 # umi-plugin-animation-routes
 
+为移动端 h5 页面添加类似原生 APP 的 Activity 切换动画的 umi 插件， (for `umijs@3`)
+
 [![NPM version](https://img.shields.io/npm/v/umi-plugin-animation-routes.svg?style=flat)](https://npmjs.org/package/umi-plugin-animation-routes)
 [![NPM downloads](http://img.shields.io/npm/dm/umi-plugin-animation-routes.svg?style=flat)](https://npmjs.org/package/umi-plugin-animation-routes)
 
-为移动端 h5 页面添加类似原生 APP 的 Activity 切换动画的 umi 插件， (for `umijs@3`)
 
 ## 功能介绍
 

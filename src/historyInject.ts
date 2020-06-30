@@ -13,14 +13,14 @@ class RoutesBlocker {
     };
   };
 
-  canLeave = async (): Promise<boolean> => {
+  canLeave = async (...args: any[]): Promise<boolean> => {
     for (let i = 0; i < this.listeners.length; i += 1) {
       const listener = this.listeners[i];
       let res;
       if (typeof listener === 'string') {
         res = window.confirm(listener);
       } else {
-        res = await listener();
+        res = await listener(...args);
       }
       if (res === false) {
         return false;
@@ -35,7 +35,7 @@ const blocker = new RoutesBlocker();
 function wrapBlocker(target: any, funcName: string): void {
   const originFunc = target[funcName].bind(target);
   target[funcName] = (...args: any[]): void => {
-    blocker.canLeave().then((ok) => {
+    blocker.canLeave(...args).then((ok) => {
       if (ok) originFunc(...args);
     });
   };

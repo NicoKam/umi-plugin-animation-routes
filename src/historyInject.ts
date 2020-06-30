@@ -9,7 +9,7 @@ class RoutesBlocker {
     this.listeners.push(argv);
     return () => {
       const index = this.listeners.findIndex(v => v === argv);
-      this.listeners = this.listeners.splice(index, 1);
+      this.listeners.splice(index, 1);
     };
   };
 

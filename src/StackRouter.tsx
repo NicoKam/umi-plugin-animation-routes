@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import { __RouterContext as RouterContext } from 'react-router';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import invariant from 'tiny-invariant';
@@ -13,7 +13,8 @@ interface StackRouterProps {
 }
 
 const StackRouter: React.FC<StackRouterProps> = (props) => {
-  const { routerContext: context } = props;
+  const context = useContext(RouterContext);
+  invariant(context, 'You should not use <StackRouter> outside a <Router>');
   const { history, staticContext, match } = context;
   const [historyStack, offsetIndex, { push, replace, pop, go }] = useHistoryStack(history);
   const goStepRef = useRef<number>(0);
@@ -58,18 +59,20 @@ const StackRouter: React.FC<StackRouterProps> = (props) => {
             {/* double transition support persist mode */}
             <CSSTransition in={isShow} timeout={200} classNames={classNames}>
               <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: _index }}>
-                <ShouldUpdate canUpdate={isShow}>
-                  <RouterContext.Provider
-                    value={{
-                      history: curHistory,
-                      location: curLocation,
-                      match,
-                      staticContext,
-                    }}
-                  >
-                    <PersistContext.Provider value={{ history: h }}>{props.children}</PersistContext.Provider>
-                  </RouterContext.Provider>
-                </ShouldUpdate>
+                <PersistContext.Provider value={{ history: h, isShow }}>
+                  <ShouldUpdate canUpdate={isShow}>
+                    <RouterContext.Provider
+                      value={{
+                        history: curHistory,
+                        location: curLocation,
+                        match,
+                        staticContext,
+                      }}
+                    >
+                      {props.children}
+                    </RouterContext.Provider>
+                  </ShouldUpdate>
+                </PersistContext.Provider>
               </div>
             </CSSTransition>
           </CSSTransition>
@@ -79,12 +82,4 @@ const StackRouter: React.FC<StackRouterProps> = (props) => {
   );
 };
 
-const StackRouterWrapper = ({ children }: { children: any }) => (
-  <RouterContext.Consumer>
-    {(context) => {
-      invariant(context, 'You should not use <StackRouter> outside a <Router>');
-      return <StackRouter routerContext={context}>{children}</StackRouter>;
-    }}
-  </RouterContext.Consumer>
-);
-export default StackRouterWrapper;
+export default StackRouter;

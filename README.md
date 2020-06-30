@@ -60,6 +60,7 @@ PC端页面中，动画效果本身就不是特别丰富，特别是对于页面
 - 插件覆盖了`umijs`默认的`clientRender`逻辑，可能会与其它使用`clientRender`的插件产生冲突。
 - 插件对`umijs`所使用的`history`进行了拦截处理，可能会对其它拦截`history`的操作产生影响。
   - 替换了原有`history.block`的逻辑，增加了对`callback`的`async function`支持，兼容原有使用方法。
+  - 如果使用了回调函数作为`history.block`的参数，回调函数中将无法获取`location`信息。作为替代，触发路由跳转的方法和参数将会作为回调函数的参数。
   - 对`replace`/`push`/`go`/`goBack`/`goForward`方法进行了拦截，支持新的`history.block`逻辑。
 
 ## Install

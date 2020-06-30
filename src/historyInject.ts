@@ -35,7 +35,7 @@ const blocker = new RoutesBlocker();
 function wrapBlocker(target: any, funcName: string): void {
   const originFunc = target[funcName].bind(target);
   target[funcName] = (...args: any[]): void => {
-    blocker.canLeave(...args).then((ok) => {
+    blocker.canLeave(funcName, args).then((ok) => {
       if (ok) originFunc(...args);
     });
   };
@@ -48,7 +48,7 @@ function wrapBlocker(target: any, funcName: string): void {
 export function injectHistory(history: any, onGoStep: numHandle = () => undefined): void {
   const originGo = history.go.bind(history);
   history.go = (num: number) => {
-    blocker.canLeave().then((ok) => {
+    blocker.canLeave('go', [num]).then((ok) => {
       if (ok) {
         onGoStep(num);
         originGo(num);

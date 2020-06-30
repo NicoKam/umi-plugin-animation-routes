@@ -58,6 +58,7 @@ import { history, Prompt } from 'umi';
 /* 通常的路由拦截的做法 */
 export default () => {
   useEffect(() => {
+    /* 注：默认情况下 history.block 或 Prompt 都不支持返回Promise以实现异步路由拦截 */
     return history.block( (method, args) => new Promise((resolve) => {
       console.log(method, args);
       Modal.alert('Warn', 'Do you want to leave???', [{ text: 'Cancel' }, { text: 'Ok', onPress: resolve }]);

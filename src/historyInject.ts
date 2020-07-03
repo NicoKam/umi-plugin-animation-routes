@@ -62,5 +62,6 @@ export function injectHistory(history: any, onGoStep: numHandle = () => undefine
   });
 
   /* change block function */
+  history.originBlock = history.block;
   history.block = blocker.block;
 }

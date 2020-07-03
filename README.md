@@ -1,6 +1,6 @@
 # umi-plugin-animation-routes
 
-Add umi plugins for mobile h5 pages with native app-like Activity transitions. (for `umijs@3`)
+An umi plugin for mobile h5 pages with native app-like Activity transitions. (for `umijs@3`)
 
 [![NPM version](https://img.shields.io/npm/v/umi-plugin-animation-routes.svg?style=flat)](https://npmjs.org/package/umi-plugin-animation-routes)
 [![NPM downloads](http://img.shields.io/npm/dm/umi-plugin-animation-routes.svg?style=flat)](https://npmjs.org/package/umi-plugin-animation-routes)
@@ -15,19 +15,19 @@ Add umi plugins for mobile h5 pages with native app-like Activity transitions. (
 
 <p><img src="./assets/animation-routes-1.gif" /></p>
 
-You don't have to change anything, the page switch will be animated when you switch routes. You just keep using `history.push`/`history.goBack`/` Link' is sufficient for page jumping.
+The page will switch with animation without change anything. You can just using `history.push`/`history.goBack`/`<Link />` to switch route as usual.
 
-Note: Observe the semantics of route hopping, where the animation switch is performed according to the `PUSH`/`POP` operation of the route. That is, if you jump from `/home` to `/about` and want to return, run `history'. .goBack()` instead of `history.push('/home')`.
+Note: Animation is performed according to the `PUSH`/`POP` operation of the `history` listener. That is, if you jump from `/home` to `/about` and want to go back, use `history.goBack()` instead of `history.push('/home')` at all.
 
 ### Persist(keep-alive)
 
-If you want to return to the previous page while still being able to keep all the states of the previous page (e.g. if you return to the product listing page, you naturally want to still be in the position you were looking at before)
+If you want to back to the previous page while still being able to keep all the states of the previous page (e.g. if you back to the product listing page, you naturally want to still be in the position you were looking at before), you can try `Persist` component.
 
 I added a timer to each page and added `keep-alive` feature to `/about`, the effect of which can be seen below.
 
 <p><img src="./assets/animation-routes-2.gif" /></p>
 
-In the above diagram, the routing hops are in the order of `/home` → `/about(persist)` → `/test1` → `/about(persist)` → `/test1` → `/test2/` → `/test1` → `/about(persist)`
+In the above gif, the routing hops are in the order of `/home` → `/about(persist)` → `/test1` → `/about(persist)` → `/test1` → `/test2/` → `/test1` → `/about(persist)`
 
 Each time you enter the page, if it is the first time, the timer counts from 0. When you return to the `/about` page, you can see that the counter does not start at 0, the timer is still running (DOM are not uninstalled). The `/home` and `/test1` pages, which are not handled by `keep-alive`, are counted from 0 Start counting (DOM are unloaded when the route is switched)
 

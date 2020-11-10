@@ -20,6 +20,7 @@ export function usePersistFn<T extends noop>(fn: T) {
   return persistFn;
 }
 
+/* like setState */
 export function useOState<T extends object>(initialObj: T = {} as T): [T, (o: Partial<T>) => void] {
   const [state, setState] = useState(initialObj);
   const setOState = usePersistFn((obj) => {

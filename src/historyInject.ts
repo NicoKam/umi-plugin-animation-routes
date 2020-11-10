@@ -56,8 +56,25 @@ export function injectHistory(history: any, onGoStep: numHandle = () => undefine
     });
   };
 
+  const originPush = history.push;
+  history.push = (v1: any, state: any) => {
+    const argType = typeof v1 === 'string' ? 'url' : 'object';
+    const curKey = history.location.state?._historyKey ?? 0;
+    // console.debug('curKey', curKey);
+    if (argType === 'url') {
+      return originPush.call(history, v1, { ...state, _historyKey: curKey + 1 });
+    }
+    return originPush.call({
+      ...v1,
+      state: {
+        ...v1,
+        _historyKey: curKey + 1,
+      },
+    });
+  };
+
   /* wrap all function */
-  ['push', 'replace', 'goBack', 'goForward'].forEach((funcName) => {
+  ['replace', 'goBack', 'goForward'].forEach((funcName) => {
     wrapBlocker(history, funcName);
   });
 

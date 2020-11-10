@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useContext } from 'react';
 import { __RouterContext as RouterContext } from 'react-router';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import invariant from 'tiny-invariant';
-import { useHistoryStack } from './renderTools';
+import { useHistoryStack } from './hooks';
 import { injectHistory } from './historyInject';
 import PersistContext from './PersistContext';
 import '../styles/StackRouter.less';
@@ -17,17 +17,32 @@ const StackRouter: React.FC<StackRouterProps> = (props) => {
   invariant(context, 'You should not use <StackRouter> outside a <Router>');
   const { history, staticContext, match } = context;
   const [historyStack, offsetIndex, { push, replace, pop, go }] = useHistoryStack(history);
-  const goStepRef = useRef<number>(0);
+  const _this = useRef({
+    goStep: 0,
+    lastHistoryKey: history.location.state?._historyKey ?? 0,
+    lastLastHistoryKey: history.location.state?._historyKey ?? 0,
+  }).current;
 
   useEffect(() => {
     injectHistory(history, (goStep) => {
-      goStepRef.current = goStep;
+      _this.goStep = goStep;
     });
-    return history.listen((_: any, action: string) => {
-      if (goStepRef.current) {
-        go(goStepRef.current);
-        goStepRef.current = 0;
+    return history.listen((newLocation: any, _action: string) => {
+      let action = _action;
+      if (_this.goStep) {
+        go(_this.goStep);
+        _this.goStep = 0;
       } else {
+        const curKey = newLocation.state?._historyKey ?? 0;
+
+        /* fix: 浏览器前进后退时，action总是为'POP'， */
+        if (_this.lastHistoryKey !== curKey && action === 'POP') {
+          if (curKey > _this.lastHistoryKey) {
+            /* 如果key增加了，说明时进行了前进操作 */
+            action = 'PUSH';
+          }
+        }
+        _this.lastHistoryKey = curKey;
         switch (action) {
           case 'PUSH':
             push();
@@ -45,13 +60,15 @@ const StackRouter: React.FC<StackRouterProps> = (props) => {
     });
   }, [history]);
 
-  const classNames = `stack-routes-anim-${history.action === 'PUSH' ? 'push' : 'pop'}`;
+  const classNames = `stack-routes-anim-${_this.lastLastHistoryKey - _this.lastHistoryKey < 0 ? 'push' : 'pop'}`;
+  _this.lastLastHistoryKey = _this.lastHistoryKey;
   return (
     <TransitionGroup childFactory={child => React.cloneElement(child, { classNames })}>
       {historyStack.map((h, _index) => {
         const curHistory = _index === historyStack.length - 1 ? history : h;
         const curLocation = h.location;
         const isShow = _index === historyStack.length - 1;
+        // const historyKey = h.location.state?._historyKey ?? 0;
         const key = offsetIndex + _index;
         if (!isShow && !h.persist) return null;
         return (

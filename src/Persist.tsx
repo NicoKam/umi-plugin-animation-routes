@@ -13,7 +13,7 @@ const Persist: React.FC<PersistProps> = (props) => {
 
   useEffect(() => {
     (history as any).persist = persist;
-  }, [persist]);
+  }, [persist, history]);
 
   useEffect(() => {
     let fn: Function;

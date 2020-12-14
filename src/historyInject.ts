@@ -46,6 +46,7 @@ function wrapBlocker(target: any, funcName: string): void {
  * @param history created by createBrowserHistory()
  */
 export function injectHistory(history: any, onGoStep: numHandle = () => undefined): void {
+  console.warn('history has been injected by umi-plugin-animation-routes');
   const originGo = history.go.bind(history);
   history.go = (num: number) => {
     blocker.canLeave('go', [num]).then((ok) => {

@@ -75,7 +75,7 @@ const StackRouter: React.FC<StackRouterProps> = (props) => {
           <CSSTransition key={key} timeout={200}>
             {/* double transition support persist mode */}
             <CSSTransition in={isShow} timeout={200} classNames={classNames}>
-              <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: _index }}>
+              <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: _index }}>
                 <PersistContext.Provider value={{ history: h, isShow }}>
                   <ShouldUpdate canUpdate={isShow}>
                     <RouterContext.Provider

@@ -65,11 +65,11 @@ export function injectHistory(history: any, options: InjectOptions = {}): void {
 
   function wrapBlocker(target: any, funcName: string): void {
     const originFunc = target[funcName].bind(target);
-    target[funcName] = (...args: any[]): void => {
-      blocker.canLeave(funcName, args).then((ok) => {
+    target[funcName] = (arg1: any, arg2: any, physical: boolean): void => {
+      blocker.canLeave(funcName, [], physical).then((ok) => {
         if (ok) {
           beforeHistoryChange();
-          originFunc(...args);
+          originFunc();
         }
       });
     };
@@ -87,11 +87,11 @@ export function injectHistory(history: any, options: InjectOptions = {}): void {
   };
 
   const originPush = history.push;
-  history.push = (v1: any, state: any) => {
+  history.push = (v1: any, state: any, physical: boolean) => {
     const argType = typeof v1 === 'string' ? 'url' : 'object';
     const curKey = history.location.state?._historyKey ?? 0;
 
-    blocker.canLeave('push', [v1, state]).then((ok) => {
+    blocker.canLeave('push', [v1, state], physical).then((ok) => {
       if (ok) {
         beforeHistoryChange();
         if (argType === 'url') {
@@ -160,9 +160,9 @@ export function injectHistory(history: any, options: InjectOptions = {}): void {
         const isForward = nextKey > lastKey;
         if (isForward) {
           const { key: nouse, ...otherLocationProps } = newLocation;
-          history.push(otherLocationProps);
+          history.push(otherLocationProps, undefined, true);
         } else {
-          history.goBack();
+          history.goBack(undefined, undefined, true);
         }
         return false;
       }

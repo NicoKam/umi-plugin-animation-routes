@@ -59,7 +59,8 @@ export function useHistoryStack(
   });
   const replace = usePersistFn(() => {
     if (currStack.length === 0) {
-      console.error('history replace error: stack size(0)');
+      console.warn('history replace error: stack size(0), push instead.');
+      push();
       return;
     }
     setState({

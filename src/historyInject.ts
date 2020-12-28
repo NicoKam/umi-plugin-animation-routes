@@ -149,7 +149,7 @@ export function injectHistory(history: any, options: InjectOptions = {}): void {
 
   /* block origin block */
   history.originBlock((newLocation: any) => {
-    console.log(newLocation);
+    // console.log(newLocation);
     if (initiative === false) {
       /* 非主动切换路由（浏览器前进后退） */
       const needBlock = blocker.listeners.length > 0;

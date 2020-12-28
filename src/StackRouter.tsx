@@ -35,12 +35,10 @@ const StackRouter: React.FC<StackRouterProps> = (props) => {
       },
     });
     return history.listen((newLocation: any, _action: string) => {
-      console.log('changed', newLocation);
       let action = _action;
 
       const curKey = newLocation.state?._historyKey ?? 0;
 
-      // console.log(_this.lastHistoryKey, curKey);
 
       /* fix: 浏览器前进后退时，action总是为'POP'， */
       if (_this.lastHistoryKey !== curKey && action === 'POP') {

@@ -159,10 +159,10 @@ export function injectHistory(history: any, options: InjectOptions = {}): void {
         /* 判断当前点击的是前进/后退 */
         const isForward = nextKey > lastKey;
         if (isForward) {
-          const { key: nouse, ...otherLocationProps } = newLocation;
-          history.push(otherLocationProps, undefined, true);
+          // const { key: nouse, ...otherLocationProps } = newLocation;
+          history.go(1);
         } else {
-          history.goBack(undefined, undefined, true);
+          history.go(-1);
         }
         return false;
       }

@@ -44,6 +44,7 @@ class RoutesBlocker {
 const blocker = new RoutesBlocker();
 
 export type InjectOptions = {
+  customBlocker?:boolean;
   onGoStep?: NumHandle;
   beforeHistoryChange?: Function;
 };
@@ -54,7 +55,9 @@ export type InjectOptions = {
  */
 export function injectHistory(history: any, options: InjectOptions = {}): void {
   console.warn('history has been injected by umi-plugin-animation-routes');
-  const { onGoStep = () => undefined } = options;
+  const { onGoStep = () => undefined, customBlocker = true } = options;
+
+  console.log('customBlocker', customBlocker);
 
   /* 记录是否页面主动切换路由 */
   let initiative = false;
@@ -100,7 +103,7 @@ export function injectHistory(history: any, options: InjectOptions = {}): void {
           originPush.call(history, {
             ...v1,
             state: {
-              ...v1,
+              ...v1?.state,
               _historyKey: curKey + 1,
             },
           });
@@ -122,7 +125,7 @@ export function injectHistory(history: any, options: InjectOptions = {}): void {
           originReplace.call(history, {
             ...v1,
             state: {
-              ...v1,
+              ...v1?.state,
               _historyKey: curKey,
             },
           });
@@ -136,38 +139,40 @@ export function injectHistory(history: any, options: InjectOptions = {}): void {
     wrapBlocker(history, funcName);
   });
 
+  if (customBlocker) {
   /* change block function */
-  history.originBlock = history.block;
-  history.block = blocker.block;
+    history.originBlock = history.block;
+    history.block = blocker.block;
 
-  let lastKey = history.location.state?._historyKey ?? 0;
+    let lastKey = history.location.state?._historyKey ?? 0;
 
-  history.listen((newLocation: any) => {
-    const nextKey = newLocation.state?._historyKey ?? 0;
-    lastKey = nextKey;
-  });
+    history.listen((newLocation: any) => {
+      const nextKey = newLocation.state?._historyKey ?? 0;
+      lastKey = nextKey;
+    });
 
-  /* block origin block */
-  history.originBlock((newLocation: any) => {
+    /* block origin block */
+    history.originBlock((newLocation: any) => {
     // console.log(newLocation);
-    if (initiative === false) {
+      if (initiative === false) {
       /* 非主动切换路由（浏览器前进后退） */
-      const needBlock = blocker.listeners.length > 0;
-      if (needBlock) {
-        const nextKey = newLocation.state?._historyKey ?? 0;
+        const needBlock = blocker.listeners.length > 0;
+        if (needBlock) {
+          const nextKey = newLocation.state?._historyKey ?? 0;
 
-        /* 判断当前点击的是前进/后退 */
-        const isForward = nextKey > lastKey;
-        if (isForward) {
+          /* 判断当前点击的是前进/后退 */
+          const isForward = nextKey > lastKey;
+          if (isForward) {
           // const { key: nouse, ...otherLocationProps } = newLocation;
-          history.go(1);
-        } else {
-          history.go(-1);
+            history.go(1);
+          } else {
+            history.go(-1);
+          }
+          return false;
         }
-        return false;
       }
-    }
-    initiative = false;
-    return true;
-  });
+      initiative = false;
+      return true;
+    });
+  }
 }

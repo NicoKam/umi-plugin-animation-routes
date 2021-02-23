@@ -58,7 +58,7 @@ function RouterComponent(props: IRouterComponentProps) {
 
   return (
     <Router history={history}>
-      <StackRouter>{renderRoutes(renderRoutesProps)}</StackRouter>
+      <StackRouter customBlocker={!window.__animation_routes_use_k_history}>{renderRoutes(renderRoutesProps)}</StackRouter>
     </Router>
   );
 }

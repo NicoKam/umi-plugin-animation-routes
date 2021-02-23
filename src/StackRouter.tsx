@@ -8,11 +8,12 @@ import PersistContext from './PersistContext';
 import '../styles/StackRouter.less';
 import ShouldUpdate from './ShouldUpdate';
 
-interface StackRouterProps {
-  routerContext: any;
+export interface StackRouterProps {
+  customBlocker?: boolean;
 }
 
 const StackRouter: React.FC<StackRouterProps> = (props) => {
+  const { customBlocker } = props;
   const context = useContext(RouterContext);
   invariant(context, 'You should not use <StackRouter> outside a <Router>');
   const { history, staticContext, match } = context;
@@ -33,8 +34,10 @@ const StackRouter: React.FC<StackRouterProps> = (props) => {
         if (animation === false) _this.useAnimation = false;
         _this.goStep = goStep;
       },
+      customBlocker,
     });
     return history.listen((newLocation: any, _action: string) => {
+      console.log(newLocation);
       let action = _action;
 
       const curKey = newLocation.state?._historyKey ?? 0;

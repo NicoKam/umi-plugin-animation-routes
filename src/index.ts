@@ -2,25 +2,33 @@ import { IApi } from 'umi';
 import { resolve } from 'path';
 
 export default (api: IApi) => {
-  // const logger = {
-  //   info(...args: any[]) {
-  //     api.logger.info('[plugin-cordova]', ...args);
-  //   },
-  //   log(...args: any[]) {
-  //     api.logger.log('[plugin-cordova]', ...args);
-  //   },
-  //   error(...args: any[]) {
-  //     api.logger.error('[plugin-cordova]', ...args);
-  //   },
-  // };
-  // api.describe({
-  //   key: 'stackRoutes',
-  //   config: {
-  //     schema(joi) {
-  //       return joi.object({});
-  //     },
-  //   },
-  // });
+  api.describe({
+    key: 'animationRoutes',
+    config: {
+      schema(joi) {
+        return joi.object({
+          kHistory: joi.boolean(),
+        });
+      },
+    },
+  });
+
+  api.addHTMLScripts(() => {
+    if (api.config?.animationRoutes?.kHistory) {
+      return [{ content: 'window.__animation_routes_use_k_history = true' }];
+    }
+    return [];
+  });
+
+  api.modifyConfig((config) => {
+    if (api.config?.animationRoutes?.kHistory) {
+      return {
+        ...config,
+        alias: { ...config.alias, 'history-with-query': resolve(api.paths.absNodeModulesPath!, 'k-history', 'lib') },
+      };
+    }
+    return { ...config };
+  });
 
   api.modifyRendererPath(() => {
     return resolve(__dirname, 'clientRender');

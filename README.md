@@ -151,9 +151,19 @@ Configure in `.umirc.js`,
 
 ```js
 export default {
-  /* latter */
+  animationRoutes: {
+    kHistory: false,
+  },
 };
 ```
+
+### kHistory
+
+> since: 0.3.0
+
+Add support to `k-history`, which fix `history.block` broken after reload.
+
+Tips: Add [`k-history`](https://www.npmjs.com/package/k-history) to dependencies before using option `kHistory`.
 
 ## LICENSE
 

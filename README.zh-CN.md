@@ -5,7 +5,6 @@
 [![NPM version](https://img.shields.io/npm/v/umi-plugin-animation-routes.svg?style=flat)](https://npmjs.org/package/umi-plugin-animation-routes)
 [![NPM downloads](http://img.shields.io/npm/dm/umi-plugin-animation-routes.svg?style=flat)](https://npmjs.org/package/umi-plugin-animation-routes)
 
-
 ## 功能介绍
 
 ### 路由动画
@@ -83,7 +82,7 @@ export default () => {
 
 因此，上述示例中的两种方式创建的路由拦截，在页面离开（压入栈）后，仍然会生效。
 
-为此，我在`Persist`组件上加入了`onShow`, `onHide`事件，用于监听`keep-alive`页面的显隐。下面是在使用了Persist的情况下，对路由进行拦截的实现方式。
+为此，我在`Persist`组件上加入了`onShow`, `onHide`事件，用于监听`keep-alive`页面的显隐。下面是在使用了 Persist 的情况下，对路由进行拦截的实现方式。
 
 ```jsx
 import { Modal } from 'antd-mobile';
@@ -96,15 +95,18 @@ export default () => {
       {/* onShow 方法与 useEffect的习惯类似，允许返回一个方法，并在 onHide 时触发 */}
       <Persist
         onShow={() =>
-          history.block(() => new Promise((resolve) => {
-            Modal.alert('Warn', 'Do you want to leave???', [{ text: 'Cancel' }, { text: 'Ok', onPress: resolve }]);
-          }))
+          history.block(
+            () =>
+              new Promise((resolve) => {
+                Modal.alert('Warn', 'Do you want to leave???', [{ text: 'Cancel' }, { text: 'Ok', onPress: resolve }]);
+              }),
+          )
         }
         onHide={() => console.log('hide')}
       />
     </div>
   );
-}
+};
 ```
 
 ## Why
@@ -124,12 +126,12 @@ PC 端页面中，动画效果本身就不是特别丰富，特别是对于页�
 
 ### 关于 history.originBlock
 
-我覆盖`history.block`原有逻辑的原因有2个：
+我覆盖`history.block`原有逻辑的原因有 2 个：
 
 1. 我希望能够添加支持异步拦截
 2. `history`工具无法告诉我当用户点击【前进】/【后退】时，到底点了哪个。
 
-关于第二点，是浏览器本身并不会告诉你用户到底进行了前进或后退，[see issue](https://github.com/ReactTraining/history/issues/676)。作者虽然说可以通过在state中自定义属性以标记路由的序号，但移动端项目通常使用hash路由，不支持设置state(至少在`umi@3`集成的`history-with-query`库是这样的)。且`history`本身有记录idx，但我无法获取它。
+关于第二点，是浏览器本身并不会告诉你用户到底进行了前进或后退，[see issue](https://github.com/ReactTraining/history/issues/676)。作者虽然说可以通过在 state 中自定义属性以标记路由的序号，但移动端项目通常使用 hash 路由，不支持设置 state(至少在`umi@3`集成的`history-with-query`库是这样的)。且`history`本身有记录 idx，但我无法获取它。
 
 ## Install
 
@@ -148,9 +150,19 @@ Configure in `.umirc.js`,
 
 ```js
 export default {
-  /* latter */
+  animationRoutes: {
+    kHistory: false,
+  },
 };
 ```
+
+### kHistory
+
+> 版本要求：0.3.0
+
+增加对 `k-history` 的支持，解决刷新后 `history.block`失效的问题。
+
+注：当开启 `kHistory` 选项后时，你必须确保已安装 [`k-history`](https://www.npmjs.com/package/k-history)
 
 ## LICENSE
 

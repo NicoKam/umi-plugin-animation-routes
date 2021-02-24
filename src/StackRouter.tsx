@@ -37,7 +37,6 @@ const StackRouter: React.FC<StackRouterProps> = (props) => {
       customBlocker,
     });
     return history.listen((newLocation: any, _action: string) => {
-      console.log(newLocation);
       let action = _action;
 
       const curKey = newLocation.state?._historyKey ?? 0;
@@ -58,7 +57,7 @@ const StackRouter: React.FC<StackRouterProps> = (props) => {
         _this.lastLastHistoryKey = _this.lastHistoryKey;
         _this.useAnimation = true;
       }
-
+      
       if (_this.goStep) {
         /* 有明确的前进后退标识 */
         go(_this.goStep);

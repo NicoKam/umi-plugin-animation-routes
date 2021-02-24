@@ -57,7 +57,7 @@ export function injectHistory(history: any, options: InjectOptions = {}): void {
   console.warn('history has been injected by umi-plugin-animation-routes');
   const { onGoStep = () => undefined, customBlocker = true } = options;
 
-  console.log('customBlocker', customBlocker);
+  // console.log('customBlocker', customBlocker);
 
   /* 记录是否页面主动切换路由 */
   let initiative = false;

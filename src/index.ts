@@ -21,10 +21,12 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig((config) => {
-    if (api.config?.animationRoutes?.kHistory) {
+    if (config.animationRoutes?.kHistory) {
+      const kHistoryPath = resolve(api.paths.absNodeModulesPath!, 'k-history', 'lib');
+      api.logger.warn(`You are using plugin-animation-routes with k-history, 'history-with-query' is mapping to [${kHistoryPath}]`);
       return {
         ...config,
-        alias: { ...config.alias, 'history-with-query': resolve(api.paths.absNodeModulesPath!, 'k-history', 'lib') },
+        alias: { ...config.alias, 'history-with-query': kHistoryPath },
       };
     }
     return { ...config };
